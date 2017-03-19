@@ -5,14 +5,20 @@ defmodule KV.Bucket do
   end
 
   def get(bucket, key) do
-    Agent.get(bucket, &Map.get(&1, key))
+    Agent.get(bucket, fn d ->
+      Map.get(d, key)
+    end)
   end
 
   def put(bucket, key, value) do
-    Agent.update(bucket, &Map.put(&1, key, value))
+    Agent.update(bucket, fn d ->
+      Map.put(d, key, value)
+    end)
   end
 
   def delete(bucket, key) do
-    Agent.get_and_update(bucket, &Map.pop(&1, key))
+    Agent.get_and_update(bucket, fn d ->
+      Map.pop(d, key)
+    end)
   end
 end
